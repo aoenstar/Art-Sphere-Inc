@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "sqlserver"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  user_id         Int               @id @default(autoincrement())
+  firstname       String
+  lastname        String
+  email           String
+  password        String
+  age_group       String?
+  zipcode         Int?
+  gender          String?
+  created_at      DateTime          @default(now())
+  profile_picture String?
+  hours_goal      Int?
+  last_active     DateTime
+  projects        UsersOnProjects[] // collaborators
+  owned_projects  Project[]
+  hours           Hour[]
+}
+
+model Project {
+  project_id      Int               @id @default(autoincrement())
+  name            String
+  description     String?
+  continent       String
+  completion_date DateTime?
+  created_at      DateTime          @default(now())
+  owner_id        Int
+  owner           User?             @relation(fields: [owner_id], references: [user_id])
+  questions       Question[]
+  users           UsersOnProjects[]
+  hours           Hour[]
+}
+
+model UsersOnProjects {
+  user       User    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  user_id    Int
+  project    Project @relation(fields: [project_id], references: [project_id], onDelete: NoAction, onUpdate: NoAction)
+  project_id Int
+
+  @@id([user_id, project_id])
+}
+
+model Hour {
+  user_id    Int
+  project_id Int
+  hours      Int
+  date       DateTime @default(now())
+  project    Project  @relation(fields: [project_id], references: [project_id], onDelete: NoAction, onUpdate: NoAction)
+  user       User     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([user_id, project_id])
+}
+
+model Question {
+  question_id Int      @id @default(autoincrement())
+  project_id  Int
+  question    String
+  answer      String?
+  status      String?
+  created_at  DateTime @default(now())
+  project     Project  @relation(fields: [project_id], references: [project_id])
+}
