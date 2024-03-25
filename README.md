@@ -10,14 +10,27 @@
 ### Why SQL Over NOSQL?
 * 
 
+### Updating Schema
+Run the following and replace `message` with a message of what you changed
+```
+npx prisma migrate dev --name message
+npx prisma generate
+```
+
 ### Viewing Database Entries
-* Download Azure Data Studio to view
+* Download Azure Data Studio to view db
 
 * Need a Shadow database to update schema
 ### Run Shadow Database on Docker:
-Creating:
-
+* Need Docker Desktop
+Creating Shadow Database:
+```
+docker pull mcr.microsoft.com/mssql/server:2022-latest
+```
+Running Shadow Database:
 ```
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Hack4Impact!" -p 1433:1433 -d --name sql_server mcr.microsoft.com/mssql/server:2022-latest
-ace6a5ef80433263a4c89f87cc061dace538c869b8add6c75df60db337d0f60a
 ``` 
+
+## Authentication
+* Using firebase auth to avoid security risks

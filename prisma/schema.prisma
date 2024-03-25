@@ -39,7 +39,7 @@ model Project {
   continent       String
   completion_date DateTime?
   created_at      DateTime          @default(now())
-  owner_id        Int
+  owner_id        Int?
   owner           User?             @relation(fields: [owner_id], references: [user_id])
   questions       Question[]
   users           UsersOnProjects[]
