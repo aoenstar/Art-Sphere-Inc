@@ -3,15 +3,20 @@
 * This is a guide on how to get your environment started without worrying about deployment
 
 ## Installation
-1. Install Docker Desktop
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 2. Open a terminal and run the following:
 ```bash
 docker pull mcr.microsoft.com/mssql/server:2022-latest
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Hack4Impact!" -p 1433:1433 -d --name sql_server mcr.microsoft.com/mssql/server:2022-latest
 ```
-3. Download Azure Data Studio to view db
+3. Download [Azure Data Studio](https://azure.microsoft.com/en-us/products/data-studio) to view db
 4. Install the Prisma VSCODE extension (helpful if changing database schema but not necessary)
 5. Run `yarn install`
+6. Create .env file and ask us for what values to put in
+```
+DATABASE_URL=
+SHADOW_DATABASE_URL=
+```
 6. To start server run `yarn dev`
 
 ## Viewing Database
@@ -33,3 +38,8 @@ password = Hack4Impact223
 * Can open Docker Desktop to start and stop docker database
 
 ## Updating Database Schema
+To update the schema, run the following and replace `message` with a message of what you changed
+```
+npx prisma migrate dev --name message
+npx prisma generate
+```
