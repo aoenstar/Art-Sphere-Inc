@@ -43,3 +43,6 @@ To update the schema, run the following and replace `message` with a message of 
 npx prisma migrate dev --name message
 npx prisma generate
 ```
+
+## Request Validation
+* Using [express-validator](https://express-validator.github.io/docs) to authenticate api requests
