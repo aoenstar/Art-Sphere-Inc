@@ -40,7 +40,7 @@ const getProjectById = async (
     if (!project) {
       return res.status(400).json({ message: 'Project not found' });
     }
-    res.send(project);
+    res.status(200).send(project);
   } catch (error) {
     next(error);
   }
