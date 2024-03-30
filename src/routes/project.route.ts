@@ -4,6 +4,7 @@ import { body } from 'express-validator';
 import {
   getAllProjects,
   createProject,
+  getProjectById
 } from '../controllers/project.controller';
 
 const router = express.Router();
@@ -17,5 +18,7 @@ router.post(
   body('description').default(''),
   createProject,
 );
+
+router.get('/:projectID', getProjectById);
 
 export default router;

@@ -17,4 +17,16 @@ const createProject = async (
   return post;
 };
 
-export default { createProject };
+const getProjectById = async (
+  projectID: number
+) => {
+  const project = await prisma.project.findUnique({
+    where: {
+      project_id: projectID,
+    },
+  });
+  return project;
+
+};
+
+export default { createProject, getProjectById };
