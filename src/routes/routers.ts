@@ -9,12 +9,18 @@ The prefix should be of the form '/api/ROUTERNAME'
 import { Router } from 'express';
 import projectRouter from './project.route';
 import questionRouter from './question.route';
+import userRouter from './user.route';
+
 const prefixToRouterMap: { prefix: string; router: Router }[] = [
   {
     prefix: '/projects',
     router: projectRouter,
   },
   { prefix: '/questions', router: questionRouter },
+  {
+    prefix: '/users',
+    router: userRouter,
+  },
 ];
 
 export default prefixToRouterMap;
