@@ -1,20 +1,17 @@
 import express from 'express';
-import { body } from 'express-validator';
 
 import {
+  loginUser,
   registerUser,
+  updatePassword,
+  updateProfile,
 } from '../controllers/user.controller';
-
-
 
 const router = express.Router();
 
-router.post(
-  '/',
-  body('firstname').notEmpty().withMessage('missing projectName').trim(),
-  body('lastname').notEmpty().withMessage('missing continent').trim(),
-  body('institution').default(''),
-  registerUser,
-);
+router.post('/register',registerUser);
+router.post('/login',loginUser);
+router.put('/update-profile', updateProfile);
+router.put('/update-password', updatePassword);
 
 export default router;

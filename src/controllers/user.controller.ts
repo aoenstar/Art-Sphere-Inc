@@ -1,6 +1,6 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
-import { createUser, updateUser, getUser } from '../services/user.service';
+import { createUser, updateUser } from '../services/user.service';
 import passport from 'passport';
 import { User } from '@prisma/client';
 
