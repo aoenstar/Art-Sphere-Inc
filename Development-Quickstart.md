@@ -17,7 +17,12 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Hack4Impact" -p 1433:1433 -d
 DATABASE_URL=
 SHADOW_DATABASE_URL=
 ```
-6. To start server run `yarn dev`
+7. Create a database named ArtSphereInc locally by connecting to the docker database on Azure, create a new request, then running the command:
+```
+CREATE DATABASE ArtSphereInc;
+```
+
+8. To start server run `yarn dev`
 
 ## Viewing Database
 1. Open Azure Data Studio
@@ -40,9 +45,14 @@ password = Hack4Impact223
 ## Updating Database Schema
 To update the schema, run the following and replace `message` with a message of what you changed
 ```
+npx prisma pull
 npx prisma migrate dev --name message
 npx prisma generate
 ```
 
 ## Request Validation
 * Using [express-validator](https://express-validator.github.io/docs) to authenticate api requests
+
+## Potential Problems
+* Docker not working for MAC
+* Go to Settings, General, Use Rosetta for x86_64/amd
