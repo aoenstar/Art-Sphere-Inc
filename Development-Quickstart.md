@@ -7,7 +7,7 @@
 2. Open a terminal and run the following:
 ```bash
 docker pull mcr.microsoft.com/mssql/server:2022-latest
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Hack4Impact!" -p 1433:1433 -d --name sql_server mcr.microsoft.com/mssql/server:2022-latest
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Hack4Impact" -p 1433:1433 -d --name sql_server mcr.microsoft.com/mssql/server:2022-latest
 ```
 3. Download [Azure Data Studio](https://azure.microsoft.com/en-us/products/data-studio) to view db
 4. Install the Prisma VSCODE extension (helpful if changing database schema but not necessary)
