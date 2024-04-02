@@ -29,4 +29,21 @@ const createProject = async (
   res.send(project);
 };
 
-export { getAllProjects, createProject };
+const getProjectById = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { projectID } = req.params;
+  try {
+    const project = await projectService.getProjectById(Number(projectID));
+    if (!project) {
+      return res.status(400).json({ message: 'Project not found' });
+    }
+    res.status(200).send(project);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { getAllProjects, createProject, getProjectById };
