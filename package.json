@@ -41,6 +41,5 @@
     "prisma": "^5.11.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
-  },
-  "packageManager": "yarn@4.1.1+sha256.f3cc0eda8e5560e529c7147565b30faa43b4e472d90e8634d7134a37c7f59781"
+  }
 }

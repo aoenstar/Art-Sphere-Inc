@@ -16,7 +16,10 @@ const prefixToRouterMap: { prefix: string; router: Router }[] = [
     prefix: '/projects',
     router: projectRouter,
   },
-  { prefix: '/questions', router: questionRouter },
+  { 
+    prefix: '/questions', 
+    router: questionRouter 
+  },
   {
     prefix: '/users',
     router: userRouter,

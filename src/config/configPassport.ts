@@ -64,7 +64,7 @@ const initializePassport = (passport: passportStrat.PassportStatic) => {
 
   // Set up serialization and deserialization of user objects
   passport.serializeUser((user: any, done: any) => {
-    done(null, user._id);
+    done(null, user.user_id);
   });
   passport.deserializeUser((id: any, done: any) => {
     getUserById(id)

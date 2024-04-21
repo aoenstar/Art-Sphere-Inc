@@ -6,8 +6,6 @@ import session from 'express-session';
 
 const app = express();
 app.use(express.json());
-// Inits routers listed in routers.ts file
-routers.forEach((entry) => app.use(entry.prefix, entry.router));
 
 initializePassport(passport);
 
@@ -22,5 +20,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+routers.forEach((entry) => app.use(entry.prefix, entry.router));
 
 export default app;

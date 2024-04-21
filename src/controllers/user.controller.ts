@@ -64,7 +64,17 @@ const registerUser = async (
     gender,
   });
 
-  res.send(user);
+  if (!user) {
+    res.status(500).json({ error: 'Failed to create user' });
+  }
+
+  const userWithoutPassword = {
+    ...user,
+  }
+
+  delete userWithoutPassword.password;
+
+  res.send(userWithoutPassword);
 };
 
 const loginUser = async (
@@ -99,6 +109,7 @@ const loginUser = async (
       }
       req.logIn(user, (error) => {
         if (error) {
+          console.log(error);
           res.status(500).json({
           error: 'Failed to log in user',
           })
