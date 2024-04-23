@@ -1,6 +1,7 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
 import { projectService } from '../services';
+import { User } from '@prisma/client';
 
 const getAllProjects = async (
   req: express.Request,
@@ -46,4 +47,62 @@ const getProjectById = async (
   }
 };
 
-export { getAllProjects, createProject, getProjectById };
+const getProjectsByUser = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { user_id } = req.params;
+  const projects = await projectService.getProjectsByUser(parseInt(user_id));
+  res.send(projects);
+};
+
+const assignUserToProject = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const user = req.user as User;
+
+  if (!user) {
+    return res.status(401).json({ error: 'Not logged in' });
+  }
+  const { project_id } = req.params;
+  const assigned: boolean = await projectService.assignUserToProject(
+    user.user_id,
+    parseInt(project_id),
+  );
+  if (assigned) {
+    return res.send({ assignmentStatus: 'success' });
+  }
+  return res.send({ assignmentStatus: 'fail' });
+};
+
+const inviteUser = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const user = req.user as User;
+
+  if (!user) {
+    return res.status(401).json({ error: 'Not logged in' });
+  }
+  const { project_id } = req.params;
+  const { collaborators } = req.body;
+  const assignmentStatus = await projectService.inviteUser(
+    user.user_id,
+    parseInt(project_id),
+    collaborators,
+  );
+  return res.send(assignmentStatus);
+};
+
+export {
+  getAllProjects,
+  createProject,
+  getProjectById,
+  getProjectsByUser,
+  assignUserToProject,
+  inviteUser,
+};
