@@ -8,6 +8,7 @@ import {
   getProjectsByUser,
   assignUserToProject,
   inviteUser,
+  getProjectByContinent,
 } from '../controllers/project.controller';
 import { isAuthenticated } from '../controllers/auth.middleware';
 
@@ -30,5 +31,7 @@ router.get('/users/:user_id', getProjectsByUser);
 router.post('/:project_id/assign-self', isAuthenticated, assignUserToProject);
 
 router.post('/:project_id/invite', isAuthenticated, inviteUser);
+
+router.get('/continent/:continent', getProjectByContinent);
 
 export default router;

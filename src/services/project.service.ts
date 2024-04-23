@@ -119,10 +119,40 @@ const inviteUser = async (
   return Object.fromEntries(collaboratorMap);
 };
 
+const getProjectByContinent = async (continent: string, user_id: number) => {
+  const getAssignmentStatus = (owner_id: number | null) => {
+    if (owner_id === null) {
+      return 'available';
+    }
+    if (user_id === owner_id) {
+      return 'assigned to user';
+    }
+    return 'unavailable';
+  };
+  const projects = await prisma.project.findMany({
+    where: {
+      continent: continent,
+    },
+    select: {
+      project_id: true,
+      name: true,
+      owner_id: true,
+    },
+  });
+  return projects.map((project) => {
+    const { owner_id, ...copy } = project;
+    return {
+      ...copy,
+      assignmentStatus: getAssignmentStatus(owner_id),
+    };
+  });
+};
+
 export default {
   createProject,
   getProjectById,
   getProjectsByUser,
   assignUserToProject,
   inviteUser,
+  getProjectByContinent,
 };

@@ -98,6 +98,19 @@ const inviteUser = async (
   return res.send(assignmentStatus);
 };
 
+const getProjectByContinent = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const { continent } = req.params;
+  const { userId } = req.query;
+  const projects = await projectService.getProjectByContinent(
+    continent,
+    parseInt(userId as string),
+  );
+  res.send(projects);
+};
 export {
   getAllProjects,
   createProject,
@@ -105,4 +118,5 @@ export {
   getProjectsByUser,
   assignUserToProject,
   inviteUser,
+  getProjectByContinent,
 };
