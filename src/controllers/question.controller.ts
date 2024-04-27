@@ -1,5 +1,5 @@
 import express from 'express';
-import { questionService } from '../services';
+import { projectService, questionService } from '../services';
 
 const answerQuestion = async (
   req: express.Request,
@@ -15,6 +15,17 @@ const answerQuestion = async (
     res.status(400).end();
   }
 };
+
+const createQuestion = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+
+) => {
+  const {question, project_id} = req.body;
+  const createdQuestion = await questionService.createQuestion(question, project_id);
+  res.send(createdQuestion);
+}
 
 const getQuestion = async (
   req: express.Request,
@@ -51,4 +62,4 @@ const deleteQuestion = async (
   }
 };
 
-export { answerQuestion, getQuestion, deleteQuestion };
+export { answerQuestion, createQuestion, getQuestion, deleteQuestion };
