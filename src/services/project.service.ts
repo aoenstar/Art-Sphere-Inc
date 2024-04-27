@@ -148,6 +148,42 @@ const getProjectByContinent = async (continent: string, user_id: number) => {
   });
 };
 
+const deleteProject = async (projectID: number, user_id: number) => {
+  
+    const project = await getProjectById(projectID);
+    if(user_id === project?.owner_id) {
+      await prisma.project.update({
+        data: {
+          users: {
+            deleteMany: {},
+          },
+        },
+        where: {
+          project_id: projectID,
+        },
+      });
+      await prisma.project.delete({
+        where: { project_id: projectID },
+      });
+    }
+    else {
+      await prisma.project.update({
+        data: {
+          users: {
+            deleteMany: {
+              user_id
+            },
+          },
+        },
+        where: {
+          project_id: projectID,
+        },
+      });
+    }
+    return project;
+
+};
+
 export default {
   createProject,
   getProjectById,
@@ -155,4 +191,6 @@ export default {
   assignUserToProject,
   inviteUser,
   getProjectByContinent,
+  deleteProject
 };
+

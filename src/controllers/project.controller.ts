@@ -111,6 +111,28 @@ const getProjectByContinent = async (
   );
   res.send(projects);
 };
+
+const deleteProject = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const user = req.user as User;
+
+  if (!user) {
+    return res.status(401).json({ error: 'Not logged in' });
+  }
+  
+  const { project_id } = req.params;
+
+  try {
+    const project = await projectService.deleteProject(parseInt(project_id), user.user_id);
+    res.send(project);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete project' });
+  }
+};
+
 export {
   getAllProjects,
   createProject,
@@ -119,4 +141,5 @@ export {
   assignUserToProject,
   inviteUser,
   getProjectByContinent,
+  deleteProject
 };

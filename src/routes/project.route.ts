@@ -9,6 +9,7 @@ import {
   assignUserToProject,
   inviteUser,
   getProjectByContinent,
+  deleteProject,
 } from '../controllers/project.controller';
 import { isAuthenticated } from '../controllers/auth.middleware';
 
@@ -33,5 +34,7 @@ router.post('/:project_id/assign-self', isAuthenticated, assignUserToProject);
 router.post('/:project_id/invite', isAuthenticated, inviteUser);
 
 router.get('/continent/:continent', getProjectByContinent);
+
+router.delete('/:project_id', deleteProject);
 
 export default router;
