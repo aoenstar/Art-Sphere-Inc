@@ -20,12 +20,14 @@ const createQuestion = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
-
 ) => {
-  const {question, project_id} = req.body;
-  const createdQuestion = await questionService.createQuestion(question, project_id);
+  const { question, project_id } = req.body;
+  const createdQuestion = await questionService.createQuestion(
+    question,
+    project_id,
+  );
   res.send(createdQuestion);
-}
+};
 
 const getQuestion = async (
   req: express.Request,

@@ -1,4 +1,3 @@
-import { access } from 'fs';
 import prisma from '../prisma-client';
 import { Project } from '@prisma/client';
 
@@ -149,49 +148,46 @@ const getProjectByContinent = async (continent: string, user_id: number) => {
 };
 
 const deleteProject = async (projectID: number, user_id: number) => {
-  
-    const project = await getProjectById(projectID);
-    if(user_id === project?.owner_id) {
-      await prisma.project.update({
-        data: {
-          users: {
-            deleteMany: {},
+  const project = await getProjectById(projectID);
+  if (user_id === project?.owner_id) {
+    await prisma.project.update({
+      data: {
+        users: {
+          deleteMany: {},
+        },
+      },
+      where: {
+        project_id: projectID,
+      },
+    });
+    await prisma.project.update({
+      data: {
+        questions: {
+          deleteMany: {},
+        },
+      },
+      where: {
+        project_id: projectID,
+      },
+    });
+    await prisma.project.delete({
+      where: { project_id: projectID },
+    });
+  } else {
+    await prisma.project.update({
+      data: {
+        users: {
+          deleteMany: {
+            user_id,
           },
         },
-        where: {
-          project_id: projectID,
-        },
-      });
-      await prisma.project.update({
-        data: {
-          questions: {
-            deleteMany: {},
-          },
-        },
-        where: {
-          project_id: projectID,
-        },
-      });
-      await prisma.project.delete({
-        where: { project_id: projectID },
-      });
-    }
-    else {
-      await prisma.project.update({
-        data: {
-          users: {
-            deleteMany: {
-              user_id
-            },
-          },
-        },
-        where: {
-          project_id: projectID,
-        },
-      });
-    }
-    return project;
-
+      },
+      where: {
+        project_id: projectID,
+      },
+    });
+  }
+  return project;
 };
 
 export default {
@@ -201,6 +197,5 @@ export default {
   assignUserToProject,
   inviteUser,
   getProjectByContinent,
-  deleteProject
+  deleteProject,
 };
-

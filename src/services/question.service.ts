@@ -15,21 +15,17 @@ const answerQuestion = async (questionId: number, answer: string) => {
 };
 
 // Endpoint 2: Create a a questi
-const createQuestion = async (
-  question: string,
-  projectID: number
-) => {
+const createQuestion = async (question: string, projectID: number) => {
   const post: Question = await prisma.question.create({
     data: {
       question: question,
       project_id: projectID,
       created_at: new Date(),
-      status: "Not Done",
+      status: 'Not Done',
     },
   });
   return post;
 };
-
 
 // Endpoint 3: Get a specific question
 const getQuestion = async (questionId: number) => {
@@ -54,4 +50,4 @@ const deleteQuestion = async (questionId: number) => {
   }
 };
 
-export default { answerQuestion, getQuestion, deleteQuestion, createQuestion};
+export default { answerQuestion, getQuestion, deleteQuestion, createQuestion };

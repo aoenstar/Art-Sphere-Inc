@@ -122,12 +122,15 @@ const deleteProject = async (
   if (!user) {
     return res.status(401).json({ error: 'Not logged in' });
   }
-  
+
   const { project_id } = req.params;
 
   // try {
-    const project = await projectService.deleteProject(parseInt(project_id), user.user_id);
-    res.send(project);
+  const project = await projectService.deleteProject(
+    parseInt(project_id),
+    user.user_id,
+  );
+  res.send(project);
   // } catch (error) {
   //   res.status(500).json({ error: 'Failed to delete project' });
   // }
@@ -141,5 +144,5 @@ export {
   assignUserToProject,
   inviteUser,
   getProjectByContinent,
-  deleteProject
+  deleteProject,
 };

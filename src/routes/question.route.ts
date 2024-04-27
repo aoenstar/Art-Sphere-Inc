@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 router.post('/:questionId', answerQuestion);
-router.post('/', createQuestion)
+router.post('/', createQuestion);
 router.get('/:questionId', getQuestion);
 router.delete('/:questionId', deleteQuestion);
 
