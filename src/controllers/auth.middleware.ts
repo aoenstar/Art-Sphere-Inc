@@ -17,7 +17,7 @@ const isAuthenticated = (
     return;
   }
   // Providing a parameter means go to the next error handler
-  res.status(400).json({error: 'Must be logged in.'});
+  res.status(400).json({ error: 'Must be logged in.' });
 };
 
 // eslint-disable-next-line import/prefer-default-export

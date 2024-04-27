@@ -1,4 +1,5 @@
 import prisma from '../prisma-client';
+import { Question } from '@prisma/client';
 
 // Endpoint 1: Answer a question
 const answerQuestion = async (questionId: number, answer: string) => {
@@ -11,6 +12,19 @@ const answerQuestion = async (questionId: number, answer: string) => {
   } catch (error) {
     throw new Error('Failed to answer question');
   }
+};
+
+// Endpoint 2: Create a a questi
+const createQuestion = async (question: string, projectID: number) => {
+  const post: Question = await prisma.question.create({
+    data: {
+      question: question,
+      project_id: projectID,
+      created_at: new Date(),
+      status: 'Not Done',
+    },
+  });
+  return post;
 };
 
 // Endpoint 3: Get a specific question
@@ -36,4 +50,4 @@ const deleteQuestion = async (questionId: number) => {
   }
 };
 
-export default { answerQuestion, getQuestion, deleteQuestion };
+export default { answerQuestion, getQuestion, deleteQuestion, createQuestion };

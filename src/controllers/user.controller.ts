@@ -23,16 +23,19 @@ const registerUser = async (
     institution,
     age_group,
     zipcode,
-    gender
+    gender,
   } = req.body;
 
   if (!firstname || !lastname || !email || !password || !institution) {
-    res.status(400).json({ error: 'Missing required fields: firstname, lastname, email, password, institution' });
+    res.status(400).json({
+      error:
+        'Missing required fields: firstname, lastname, email, password, institution',
+    });
     return;
   }
 
   const emailRegex =
-  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
 
   const passwordRegex = /^[a-zA-Z0-9!?$%^*)(+=._-]{6,61}$/;
 
@@ -44,7 +47,9 @@ const registerUser = async (
     !firstname.match(nameRegex) ||
     !lastname.match(nameRegex)
   ) {
-    res.status(400).json({ error: 'Invalid email, password, firstname, or lastname' });
+    res
+      .status(400)
+      .json({ error: 'Invalid email, password, firstname, or lastname' });
     return;
   }
 
@@ -70,7 +75,7 @@ const registerUser = async (
 
   const userWithoutPassword = {
     ...user,
-  }
+  };
 
   delete userWithoutPassword.password;
 
@@ -97,22 +102,22 @@ const loginUser = async (
     (err: any, user: any, info: any) => {
       if (err) {
         res.status(500).json({
-        error: 'Failed to authenticate user',
-        })
+          error: 'Failed to authenticate user',
+        });
         return;
       }
       if (!user) {
         res.status(401).json({
-        error: 'Incorrect credentials',
-        })
+          error: 'Incorrect credentials',
+        });
         return;
       }
       req.logIn(user, (error) => {
         if (error) {
           console.log(error);
           res.status(500).json({
-          error: 'Failed to log in user',
-          })
+            error: 'Failed to log in user',
+          });
           return;
         }
         res.status(200).send(user);
@@ -131,9 +136,7 @@ const updatePassword = async (
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const {
-    password
-  } = req.body;
+  const { password } = req.body;
 
   if (!password) {
     return res.status(400).json({ error: 'Missing required fields: password' });
@@ -146,8 +149,8 @@ const updatePassword = async (
   }
 
   const profileUpdate = await updateUser({
-      user_id: user.user_id,
-      password,
+    user_id: user.user_id,
+    password,
   });
 
   res.send(profileUpdate);
@@ -163,12 +166,7 @@ const updateProfile = async (
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const {
-    email,
-    institution,
-    firstname,
-    lastname
-  } = req.body;
+  const { email, institution, firstname, lastname } = req.body;
 
   const user = req.user as User;
 
@@ -176,15 +174,13 @@ const updateProfile = async (
     return res.status(401).json({ error: 'Not logged in' });
   }
 
-  const profileUpdate = await updateUser(
-    {
-      user_id: user.user_id,
-      email,
-      institution,
-      firstname,
-      lastname
-    }
-  );
+  const profileUpdate = await updateUser({
+    user_id: user.user_id,
+    email,
+    institution,
+    firstname,
+    lastname,
+  });
 
   res.send(profileUpdate);
 };

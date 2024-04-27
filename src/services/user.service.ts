@@ -29,9 +29,7 @@ interface CreateUserParams {
   hours_goal?: number;
 }
 
-const createUser = async (
-  params: CreateUserParams,
-) => {
+const createUser = async (params: CreateUserParams) => {
   const hashedPassword = await hash(params.password, passwordHashSaltRounds);
   if (!hashedPassword) {
     return null;
@@ -49,9 +47,7 @@ const createUser = async (
   return user;
 };
 
-const getUserById = async (
-  user_id: number,
-) => {
+const getUserById = async (user_id: number) => {
   const user: User | null = await prisma.user.findFirst({
     where: {
       user_id: user_id,
@@ -60,9 +56,7 @@ const getUserById = async (
   return user;
 };
 
-const getUserByEmail = async (
-  email: string,
-) => {
+const getUserByEmail = async (email: string) => {
   const user: User | null = await prisma.user.findFirst({
     where: {
       email: email,
@@ -80,15 +74,13 @@ interface UpdateUserParams {
   institution?: string;
 }
 
-const updateUser = async (
-  params: UpdateUserParams,
-) => {
+const updateUser = async (params: UpdateUserParams) => {
   if (params.password) {
     const hashedPassword = await hash(params.password, passwordHashSaltRounds);
     if (!hashedPassword) {
       return null;
     }
-  
+
     params.password = hashedPassword;
   }
 
@@ -97,7 +89,7 @@ const updateUser = async (
       user_id: params.user_id,
     },
     data: {
-      ...params
+      ...params,
     },
   });
   return profileUpdate;
