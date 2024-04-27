@@ -162,6 +162,16 @@ const deleteProject = async (projectID: number, user_id: number) => {
           project_id: projectID,
         },
       });
+      await prisma.project.update({
+        data: {
+          questions: {
+            deleteMany: {},
+          },
+        },
+        where: {
+          project_id: projectID,
+        },
+      });
       await prisma.project.delete({
         where: { project_id: projectID },
       });

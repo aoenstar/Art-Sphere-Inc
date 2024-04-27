@@ -125,12 +125,12 @@ const deleteProject = async (
   
   const { project_id } = req.params;
 
-  try {
+  // try {
     const project = await projectService.deleteProject(parseInt(project_id), user.user_id);
     res.send(project);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to delete project' });
-  }
+  // } catch (error) {
+  //   res.status(500).json({ error: 'Failed to delete project' });
+  // }
 };
 
 export {
