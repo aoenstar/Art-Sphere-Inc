@@ -58,7 +58,7 @@ model Hour {
   project    Project  @relation(fields: [project_id], references: [project_id], onUpdate: NoAction)
   user       User     @relation(fields: [user_id], references: [user_id], onUpdate: NoAction)
 
-  @@id([user_id, project_id])
+  @@id([user_id, project_id, date])
 }
 
 model Question {

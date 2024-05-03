@@ -10,6 +10,7 @@ import { Router } from 'express';
 import projectRouter from './project.route';
 import questionRouter from './question.route';
 import userRouter from './user.route';
+import hoursRouter from './hours.route';
 
 const prefixToRouterMap: { prefix: string; router: Router }[] = [
   {
@@ -24,6 +25,10 @@ const prefixToRouterMap: { prefix: string; router: Router }[] = [
     prefix: '/users',
     router: userRouter,
   },
+  {
+    prefix: '/timesheet',
+    router: hoursRouter,
+  }
 ];
 
 export default prefixToRouterMap;
