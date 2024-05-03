@@ -26,7 +26,7 @@ const prefixToRouterMap: { prefix: string; router: Router }[] = [
     router: userRouter,
   },
   {
-    prefix: '/hours',
+    prefix: '/timesheet',
     router: hoursRouter,
   }
 ];

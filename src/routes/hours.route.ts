@@ -1,22 +1,11 @@
 import express from 'express';
-import { body } from 'express-validator';
-
-import {
-  getAllProjects,
-  createProject,
-  getProjectById,
-  getProjectsByUser,
-  assignUserToProject,
-  inviteUser,
-  getProjectByContinent,
-  deleteProject,
-} from '../controllers/project.controller';
 import { isAuthenticated } from '../controllers/auth.middleware';
+import { getAllHours, getTimesheet, logTimesheet } from '../controllers/hours.controller';
 
 const router = express.Router();
 
-router.post('/timesheet', isAuthenticated, getAllProjects);
-router.get('/timesheet', isAuthenticated, getAllProjects);
-router.get('/timesheet/total-hours', isAuthenticated, getAllProjects);
+router.post('/', isAuthenticated, logTimesheet);
+router.get('/', isAuthenticated, getTimesheet);
+router.get('/total-hours', isAuthenticated, getAllHours);
 
 export default router;

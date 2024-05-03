@@ -12,19 +12,21 @@ const logTimesheet = async (
   const user = req.user as User;
 
   if (!user) {
-    return res.status(401).json({message: 'Unauthorized'});
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  const {project_id, minutes, date} = req.body;
+  const { project_id, hours, date } = req.body;
 
-  if (!project_id || !minutes || !date) {
-    return res.status(400).json({message: 'Missing required fields'});
+  if (!project_id || !hours || !date) {
+    return res.status(400).json({ message: 'Missing required fields' });
   }
 
-  await logHours(user.user_id, project_id, minutes, date);
-  
-  return res.status(200);
-}
+  const hour = await logHours(user.user_id, project_id, hours, new Date(date));
+  if (!hour) {
+    return res.sendStatus(400);
+  }
+  return res.sendStatus(200);
+};
 
 const getTimesheet = async (
   req: express.Request,
@@ -34,13 +36,13 @@ const getTimesheet = async (
   const user = req.user as User;
 
   if (!user) {
-    return res.status(401).json({message: 'Unauthorized'});
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 
   const hours = await getHours(user.user_id);
 
-  return res.status(200).send(hours);
-}
+  return res.status(200).json(hours);
+};
 
 const getAllHours = async (
   req: express.Request,
@@ -50,12 +52,12 @@ const getAllHours = async (
   const user = req.user as User;
 
   if (!user) {
-    return res.status(401).json({message: 'Unauthorized'});
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 
   const totalHours = await getTotalHours(user.user_id);
 
-  return res.status(200).send(totalHours);
-}
+  return res.status(200).send(totalHours.toString());
+};
 
 export { logTimesheet, getTimesheet, getAllHours };
