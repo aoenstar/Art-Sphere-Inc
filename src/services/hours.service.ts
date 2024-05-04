@@ -2,24 +2,12 @@ import prisma from '../prisma-client';
 
 const logHours = async (
   user_id: number,
-  project_id: number,
   hours: number,
   date: Date,
 ) => {
-  const project = await prisma.project.findUnique({
-    where: {
-      project_id,
-    },
-  });
-
-  if (!project) {
-    return false;
-  }
-
   const hoursResult = await prisma.hour.create({
     data: {
       user_id,
-      project_id,
       hours,
       date,
     },

@@ -15,13 +15,13 @@ const logTimesheet = async (
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  const { project_id, hours, date } = req.body;
+  const { hours, date } = req.body;
 
-  if (!project_id || !hours || !date) {
+  if (!hours || !date) {
     return res.status(400).json({ message: 'Missing required fields' });
   }
 
-  const hour = await logHours(user.user_id, project_id, hours, new Date(date));
+  const hour = await logHours(user.user_id, hours, new Date(date));
   if (!hour) {
     return res.sendStatus(400);
   }
