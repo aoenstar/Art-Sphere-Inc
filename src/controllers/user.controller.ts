@@ -1,6 +1,6 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
-import { createUser, updateUser } from '../services/user.service';
+import { createUser, getUserByEmail, updateUser } from '../services/user.service';
 import passport from 'passport';
 import { User } from '@prisma/client';
 
@@ -56,6 +56,10 @@ const registerUser = async (
   if (req.isAuthenticated()) {
     res.status(400).json({ error: 'Already logged in' });
     return;
+  }
+  const found = await getUserByEmail(email);
+  if(found) {
+    return res.status(400).json({error: 'Email already has account'});
   }
 
   const user = await createUser({
@@ -126,6 +130,37 @@ const loginUser = async (
   )(req, res, next);
 };
 
+/**
+ * A controller function to logout a user with Passport and clear the session.
+ */
+const logout = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  const user = req.user as User;
+  if (!user) {
+    return res.status(401).json({ error: 'Not logged in' });
+  }
+  // Logout with Passport which modifies the request object
+  req.logout((err) => {
+    if (err) {
+      res.status(500).send('Failed to log out user');
+      return;
+    }
+    // Destroy the session
+    if (req.session) {
+      req.session.destroy((e) => {
+        if (e) {
+          res.status(500).send('Unable to logout properly');
+        } else {
+          res.sendStatus(200);
+        }
+      });
+    }
+  });
+};
+
 const updatePassword = async (
   req: express.Request,
   res: express.Response,
@@ -148,8 +183,7 @@ const updatePassword = async (
     return res.status(401).json({ error: 'Not logged in' });
   }
 
-  const profileUpdate = await updateUser({
-    user_id: user.user_id,
+  const profileUpdate = await updateUser(user.user_id, {
     password,
   });
 
@@ -174,8 +208,7 @@ const updateProfile = async (
     return res.status(401).json({ error: 'Not logged in' });
   }
 
-  const profileUpdate = await updateUser({
-    user_id: user.user_id,
+  const profileUpdate = await updateUser(user.user_id, {
     email,
     institution,
     firstname,
@@ -185,4 +218,4 @@ const updateProfile = async (
   res.send(profileUpdate);
 };
 
-export { registerUser, loginUser, updateProfile, updatePassword };
+export { registerUser, loginUser, updateProfile, updatePassword, logout};

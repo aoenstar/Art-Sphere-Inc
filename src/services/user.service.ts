@@ -66,7 +66,6 @@ const getUserByEmail = async (email: string) => {
 };
 
 interface UpdateUserParams {
-  user_id: number;
   firstname?: string;
   lastname?: string;
   email?: string;
@@ -74,7 +73,7 @@ interface UpdateUserParams {
   institution?: string;
 }
 
-const updateUser = async (params: UpdateUserParams) => {
+const updateUser = async (user_id: number, params: UpdateUserParams) => {
   if (params.password) {
     const hashedPassword = await hash(params.password, passwordHashSaltRounds);
     if (!hashedPassword) {
@@ -83,10 +82,14 @@ const updateUser = async (params: UpdateUserParams) => {
 
     params.password = hashedPassword;
   }
+  Object.keys(params).forEach((key) => {
+    if (params[key as keyof UpdateUserParams] == null)
+      delete params[key as keyof UpdateUserParams];
+  });
 
   const profileUpdate: User = await prisma.user.update({
     where: {
-      user_id: params.user_id,
+      user_id,
     },
     data: {
       ...params,
