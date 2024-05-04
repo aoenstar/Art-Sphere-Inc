@@ -35,7 +35,6 @@ model Project {
   completion_date DateTime?
   created_at      DateTime          @default(now())
   owner_id        Int?
-  hours           Hour[]
   owner           User?             @relation(fields: [owner_id], references: [user_id])
   questions       Question[]
   users           UsersOnProjects[]
@@ -52,13 +51,11 @@ model UsersOnProjects {
 
 model Hour {
   user_id    Int
-  project_id Int
   hours      Int
   date       DateTime @default(now())
-  project    Project  @relation(fields: [project_id], references: [project_id], onUpdate: NoAction)
   user       User     @relation(fields: [user_id], references: [user_id], onUpdate: NoAction)
 
-  @@id([user_id, project_id, date])
+  @@id([user_id, date])
 }
 
 model Question {
