@@ -90,12 +90,17 @@ const inviteUser = async (
   }
   const { project_id } = req.params;
   const { collaborators } = req.body;
-  const assignmentStatus = await projectService.inviteUser(
-    user.user_id,
-    parseInt(project_id),
-    collaborators,
-  );
-  return res.send(assignmentStatus);
+  try {
+    const assignmentStatus = await projectService.inviteUser(
+      user.user_id,
+      parseInt(project_id),
+      collaborators,
+    );
+    return res.send(assignmentStatus);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'An error occurred while inviting the user' });
+  }
 };
 
 const getProjectByContinent = async (
@@ -125,15 +130,17 @@ const deleteProject = async (
 
   const { project_id } = req.params;
 
-  // try {
-  const project = await projectService.deleteProject(
-    parseInt(project_id),
-    user.user_id,
-  );
-  res.send(project);
-  // } catch (error) {
-  //   res.status(500).json({ error: 'Failed to delete project' });
-  // }
+  try {
+    const project = await projectService.deleteProject(
+      parseInt(project_id),
+      user.user_id,
+    );
+    res.send(project);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'An error occurred while deleting the project' });
+  }
+
 };
 
 export {
