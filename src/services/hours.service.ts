@@ -5,6 +5,7 @@ const logHours = async (
   hours: number,
   date: Date,
 ) => {
+  try {
   const hoursResult = await prisma.hour.create({
     data: {
       user_id,
@@ -12,8 +13,11 @@ const logHours = async (
       date,
     },
   });
-
   return hoursResult;
+  } catch (error) {
+    console.error("Error logging hours: ", error);
+  }
+
 }
 
 const getHours = async (
@@ -37,7 +41,7 @@ const getTotalHours = async (
     },
   });
 
-  return hoursResult.reduce((acc, curr) => acc + curr.hours, 0);
+  return hoursResult.reduce((acc, curr) => acc + Number(curr.hours), 0);
 }
 
 export {
