@@ -21,12 +21,17 @@ const createQuestion = async (
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const { question, project_id } = req.body;
-  const createdQuestion = await questionService.createQuestion(
-    question,
-    project_id,
-  );
-  res.send(createdQuestion);
+  try {
+    const { question, project_id } = req.body;
+    const createdQuestion = await questionService.createQuestion(
+      question,
+      project_id,
+    );
+    res.send(createdQuestion);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'An error occurred while creating the question' });
+  }
 };
 
 const getQuestion = async (
