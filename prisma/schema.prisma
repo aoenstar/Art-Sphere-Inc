@@ -14,7 +14,6 @@ model User {
   lastname        String
   email           String
   password        String
-  institution     String?
   age_group       String?
   zipcode         Int?
   gender          String?
@@ -22,6 +21,7 @@ model User {
   profile_picture String?
   hours_goal      Int?
   last_active     DateTime
+  institution     String?
   hours           Hour[]
   owned_projects  Project[]
   projects        UsersOnProjects[]
@@ -50,10 +50,10 @@ model UsersOnProjects {
 }
 
 model Hour {
-  user_id    Int
-  hours      Int
-  date       DateTime @default(now())
-  user       User     @relation(fields: [user_id], references: [user_id], onUpdate: NoAction)
+  user_id Int
+  hours   Decimal  @db.Decimal(10, 2)
+  date    DateTime @default(now())
+  user    User     @relation(fields: [user_id], references: [user_id], onUpdate: NoAction)
 
   @@id([user_id, date])
 }
